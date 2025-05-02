@@ -76,6 +76,8 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        #start-screen { z-index: 10; }
     </style>
 </head>
 <body class="sensory-friendly min-h-screen">
@@ -98,7 +100,12 @@
                 </div>
                 
                 <div class="video-container mb-6 rounded-lg overflow-hidden shadow-lg">
-                    <video id="lesson-video" autoplay>
+                    <div id="start-screen" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <button id="start-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg">
+                            Bắt đầu bài học
+                        </button>
+                    </div>
+                    <video id="lesson-video">
                         <source src="ruatay.mp4" type="video/mp4">
                         Trình duyệt của bạn không hỗ trợ video.
                     </video>
@@ -185,6 +192,8 @@
         const celebrationModal = document.getElementById('celebration-modal');
         const closeModal = document.getElementById('close-modal');
         const progressBar = document.getElementById('progress-bar');
+        const startScreen = document.getElementById('start-screen');
+        const startBtn = document.getElementById('start-btn');
 
         // State variables
         let currentQuizIndex = 0;
@@ -201,8 +210,12 @@
             lessonTitle.textContent = lesson.title;
             videoSection.classList.remove('hidden');
             
-            // Bắt đầu phát video và kiểm tra thời gian để hiển thị câu hỏi
-            lessonVideo.play();
+            // Bắt đầu phát video khi người dùng nhấn nút "Bắt đầu"
+            startBtn.addEventListener('click', () => {
+                startScreen.classList.add('hidden');
+                lessonVideo.play();
+            });
+
             lessonVideo.addEventListener('timeupdate', checkQuizPoints);
         }
 
