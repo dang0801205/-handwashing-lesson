@@ -12,7 +12,7 @@
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
-        
+
         @keyframes incorrect {
             0% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
@@ -20,74 +20,138 @@
             75% { transform: translateX(-5px); }
             100% { transform: translateX(0); }
         }
-        
+
+        @keyframes star-animation {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
         .correct-animation {
             animation: correct 0.5s ease-in-out;
         }
-        
+
         .incorrect-animation {
             animation: incorrect 0.4s ease-in-out;
         }
-        
+
+        .star-animation {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: #ffd700;
+            animation: star-animation 1s ease-in-out;
+        }
+
         .progress-bar {
             transition: width 0.3s ease-in-out;
         }
-        
+
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
         }
-        
+
         .video-container video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Ngăn người dùng tương tác với video */
+            pointer-events: none;
         }
-        
+
         .option-btn {
             transition: all 0.2s ease;
+            width: 100%;
+            height: 150px; /* Tăng kích thước hình ảnh */
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 3px solid #a3bffa; /* Viền màu pastel */
         }
-        
+
         .option-btn:hover {
             transform: translateY(-2px);
         }
-        
+
         .sensory-friendly {
-            background-color: #f0f7ff;
+            background-color: #e6f0fa; /* Màu nền pastel nhẹ nhàng */
             color: #333;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Comic Sans MS', 'Open Sans', sans-serif; /* Font thân thiện */
         }
-        
+
         .loading-spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
-            border-top: 4px solid #3498db;
+            border-top: 4px solid #a3bffa;
             width: 40px;
             height: 40px;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
+        #quiz-section {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff3e6; /* Màu nền modal pastel */
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 20;
+            width: 90%;
+            max-width: 450px; /* Giảm kích thước modal để không gây áp lực */
+            display: none;
+            text-align: center;
+            position: relative;
+        }
+
+        #quiz-section.show {
+            display: block;
+        }
+
+        #feedback {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.25rem; /* Tăng kích thước chữ feedback */
+        }
+
         #start-screen { z-index: 10; }
+
+        h1, h2, h3, p {
+            color: #4a5568; /* Màu chữ nhẹ nhàng */
+        }
+
+        #start-btn {
+            background-color: #b2f5ea; /* Màu pastel xanh nhạt */
+            color: #2d3748;
+            border: 2px solid #81e6d9;
+        }
+
+        #start-btn:hover {
+            background-color: #81e6d9;
+        }
     </style>
 </head>
 <body class="sensory-friendly min-h-screen">
     <div class="container mx-auto px-4 py-8">
         <!-- Header -->
         <header class="mb-8 text-center">
-            <h1 class="text-4xl font-bold text-blue-600 mb-2">Learning Journey</h1>
-            <p class="text-lg text-gray-700">Interactive lessons designed for children with autism</p>
+            <h1 class="text-5xl font-bold mb-2">Learning Journey 🌈</h1>
+            <p class="text-xl">Cùng học rửa tay thật vui nhé! 🐾</p>
             <div class="w-full bg-gray-200 rounded-full h-4 mt-4">
-                <div id="progress-bar" class="progress-bar bg-blue-500 h-4 rounded-full" style="width: 0%"></div>
+                <div id="progress-bar" class="progress-bar bg-teal-300 h-4 rounded-full" style="width: 0%"></div>
             </div>
         </header>
         
@@ -96,13 +160,13 @@
             <!-- Video Player Section -->
             <section id="video-section" class="mb-8">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 id="lesson-title" class="text-2xl font-semibold text-blue-700">Hướng dẫn rửa tay</h2>
+                    <h2 id="lesson-title" class="text-3xl font-semibold">Hướng dẫn rửa tay 🖐️</h2>
                 </div>
                 
                 <div class="video-container mb-6 rounded-lg overflow-hidden shadow-lg">
                     <div id="start-screen" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <button id="start-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg">
-                            Bắt đầu bài học
+                        <button id="start-btn" class="font-bold py-3 px-6 rounded-lg text-xl">
+                            Bắt đầu nào! 🚀
                         </button>
                     </div>
                     <video id="lesson-video">
@@ -111,19 +175,14 @@
                     </video>
                 </div>
                 
-                <div id="quiz-section" class="hidden bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-semibold mb-4 text-blue-600">Quiz Time!</h3>
-                    <p id="quiz-question" class="mb-4 text-lg"></p>
+                <div id="quiz-section" class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 id="step-instruction" class="text-2xl font-semibold mb-4">Chọn bước tiếp theo nhé! 😊</h3>
                     
-                    <div id="quiz-options" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                    <div id="quiz-options" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                         <!-- Options will be added here by JavaScript -->
                     </div>
                     
                     <div id="feedback" class="hidden p-4 rounded-lg mb-4 text-center text-xl font-bold"></div>
-                    
-                    <button id="continue-btn" class="hidden bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg text-lg">
-                        Continue <i class="fas fa-play ml-2"></i>
-                    </button>
                 </div>
             </section>
             
@@ -133,10 +192,10 @@
                     <div class="text-6xl mb-4 text-yellow-400">
                         <i class="fas fa-trophy"></i>
                     </div>
-                    <h3 class="text-3xl font-bold mb-4 text-blue-600">Great Job!</h3>
-                    <p class="text-xl mb-6">You completed the lesson successfully!</p>
-                    <button id="close-modal" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg">
-                        Continue Learning
+                    <h3 class="text-3xl font-bold mb-4 text-teal-600">Giỏi quá! 🎉</h3>
+                    <p class="text-xl mb-6">Bạn đã hoàn thành bài học thật tuyệt! 🌟</p>
+                    <button id="close-modal" class="bg-teal-400 hover:bg-teal-500 text-white font-bold py-2 px-6 rounded-lg">
+                        Học tiếp nào! 🚀
                     </button>
                 </div>
             </div>
@@ -144,12 +203,12 @@
         
         <!-- Footer -->
         <footer class="mt-12 text-center text-gray-600">
-            <p>© 2023 Learning Journey. Designed with ❤️ for children with autism.</p>
+            <p>© 2023 Learning Journey. Cùng học vui vẻ nhé! 🐾</p>
             <div class="mt-4 flex justify-center space-x-4">
-                <button class="p-2 rounded-full bg-blue-100 text-blue-600">
+                <button class="p-2 rounded-full bg-teal-100 text-teal-600">
                     <i class="fas fa-volume-up"></i>
                 </button>
-                <button class="p-2 rounded-full bg-green-100 text-green-600">
+                <button class="p-2 rounded-full bg-indigo-100 text-indigo-600">
                     <i class="fas fa-text-size"></i>
                 </button>
                 <button class="p-2 rounded-full bg-yellow-100 text-yellow-600">
@@ -160,21 +219,46 @@
     </div>
 
     <script>
-        // Lesson data (chỉ có 1 bài học: Hướng dẫn rửa tay)
+        // Lesson data with image-based steps for hand washing (4 steps, 3 options each)
         const lesson = {
             id: 1,
             title: "Hướng dẫn rửa tay",
-            quizPoints: [15, 30], // thời gian dừng video để hiển thị câu hỏi (giây)
-            quizzes: [
+            steps: [
                 {
-                    question: "Bước đầu tiên khi rửa tay là gì?",
-                    options: ["Thoa xà phòng", "Làm ướt tay", "Lau khô tay", "Chà tay"],
-                    correct: 1 // Đáp án đúng: "Làm ướt tay"
+                    instruction: "Chọn bước tiếp theo nhé! 😊",
+                    options: [
+                        { src: "tap.png", alt: "Vòi nước", correct: true },
+                        { src: "soap.png", alt: "Xà phòng", correct: false },
+                        { src: "towel.png", alt: "Khăn lau", correct: false }
+                    ],
+                    correctStep: "Làm ướt tay"
                 },
                 {
-                    question: "Bạn cần chà tay trong bao lâu?",
-                    options: ["10 giây", "20 giây", "40 giây", "60 giây"],
-                    correct: 2 // Đáp án đúng: "40 giây"
+                    instruction: "Chọn bước tiếp theo nhé! 😊",
+                    options: [
+                        { src: "tap.png", alt: "Vòi nước", correct: false },
+                        { src: "soap.png", alt: "Xà phòng", correct: true },
+                        { src: "hands.png", alt: "Chà tay", correct: false }
+                    ],
+                    correctStep: "Thoa xà phòng"
+                },
+                {
+                    instruction: "Chọn bước tiếp theo nhé! 😊",
+                    options: [
+                        { src: "soap.png", alt: "Xà phòng", correct: false },
+                        { src: "towel.png", alt: "Khăn lau", correct: false },
+                        { src: "hands.png", alt: "Chà tay", correct: true }
+                    ],
+                    correctStep: "Chà tay"
+                },
+                {
+                    instruction: "Chọn bước tiếp theo nhé! 😊",
+                    options: [
+                        { src: "tap.png", alt: "Vòi nước", correct: false },
+                        { src: "towel.png", alt: "Khăn lau", correct: true },
+                        { src: "hands.png", alt: "Chà tay", correct: false }
+                    ],
+                    correctStep: "Lau khô tay"
                 }
             ],
             completed: false
@@ -185,10 +269,9 @@
         const lessonTitle = document.getElementById('lesson-title');
         const lessonVideo = document.getElementById('lesson-video');
         const quizSection = document.getElementById('quiz-section');
-        const quizQuestion = document.getElementById('quiz-question');
+        const stepInstruction = document.getElementById('step-instruction');
         const quizOptions = document.getElementById('quiz-options');
         const feedback = document.getElementById('feedback');
-        const continueBtn = document.getElementById('continue-btn');
         const celebrationModal = document.getElementById('celebration-modal');
         const closeModal = document.getElementById('close-modal');
         const progressBar = document.getElementById('progress-bar');
@@ -196,11 +279,11 @@
         const startBtn = document.getElementById('start-btn');
 
         // State variables
-        let currentQuizIndex = 0;
+        let currentStepIndex = 0;
+        let nextStepTime = 40;
 
         // Initialize the app
         function init() {
-            // Hiển thị bài học ngay lập tức
             startLesson();
             setupEventListeners();
         }
@@ -210,125 +293,139 @@
             lessonTitle.textContent = lesson.title;
             videoSection.classList.remove('hidden');
             
-            // Bắt đầu phát video khi người dùng nhấn nút "Bắt đầu"
             startBtn.addEventListener('click', () => {
                 startScreen.classList.add('hidden');
                 lessonVideo.play();
             });
 
-            lessonVideo.addEventListener('timeupdate', checkQuizPoints);
+            lessonVideo.addEventListener('timeupdate', checkStepPoints);
         }
 
         // Setup event listeners
         function setupEventListeners() {
-            // Continue button
-            continueBtn.addEventListener('click', function() {
-                quizSection.classList.add('hidden');
-                feedback.classList.add('hidden');
-                continueBtn.classList.add('hidden');
-                
-                lessonVideo.play();
-                
-                // Kiểm tra nếu đã hoàn thành tất cả câu hỏi
-                if (currentQuizIndex >= lesson.quizzes.length) {
-                    lesson.completed = true;
-                    updateProgress();
-                    celebrationModal.classList.remove('hidden');
-                }
-            });
-            
-            // Close modal button
             closeModal.addEventListener('click', function() {
                 celebrationModal.classList.add('hidden');
-                lessonVideo.currentTime = 0; // Reset video
+                lessonVideo.currentTime = 0;
                 lessonVideo.play();
-                currentQuizIndex = 0; // Reset quiz
+                currentStepIndex = 0;
+                nextStepTime = 40;
                 updateProgress();
             });
         }
 
-        // Check if video reached a quiz point
-        function checkQuizPoints() {
+        // Check if video reached a step point
+        function checkStepPoints() {
             const currentTime = lessonVideo.currentTime;
             
-            if (currentQuizIndex < lesson.quizPoints.length && 
-                currentTime >= lesson.quizPoints[currentQuizIndex] && 
-                currentTime < lesson.quizPoints[currentQuizIndex] + 1) {
+            if (currentStepIndex < lesson.steps.length && 
+                currentTime >= nextStepTime && 
+                currentTime < nextStepTime + 1) {
                 
                 lessonVideo.pause();
-                showQuiz(currentQuizIndex);
+                showStep(currentStepIndex);
             }
         }
 
-        // Show quiz
-        function showQuiz(index) {
-            const quiz = lesson.quizzes[index];
+        // Show step
+        function showStep(index) {
+            const step = lesson.steps[index];
             
-            quizQuestion.textContent = quiz.question;
-            
+            stepInstruction.textContent = step.instruction;
             quizOptions.innerHTML = '';
-            quiz.options.forEach((option, i) => {
-                const button = document.createElement('button');
-                button.className = 'option-btn bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-3 px-4 rounded-lg text-lg';
-                button.textContent = option;
-                button.dataset.index = i;
-                button.addEventListener('click', handleOptionClick);
-                quizOptions.appendChild(button);
+            
+            step.options.forEach((option, i) => {
+                const img = document.createElement('img');
+                img.className = 'option-btn bg-gray-200';
+                img.src = option.src;
+                img.alt = option.alt;
+                img.dataset.index = i;
+                img.dataset.correct = option.correct;
+                img.addEventListener('click', () => handleOptionClick(index, i));
+                quizOptions.appendChild(img);
             });
             
-            quizSection.classList.remove('hidden');
+            quizSection.classList.add('show');
         }
 
         // Handle option click
-        function handleOptionClick(e) {
-            const selectedIndex = parseInt(e.target.dataset.index);
-            const correctIndex = lesson.quizzes[currentQuizIndex].correct;
+        function handleOptionClick(index, selectedIndex) {
+            const step = lesson.steps[index];
+            const options = quizOptions.querySelectorAll('img');
+            const selectedOption = step.options[selectedIndex];
             
-            // Disable all options
-            const options = quizOptions.querySelectorAll('button');
             options.forEach(option => {
-                option.disabled = true;
-                option.classList.remove('bg-blue-100', 'hover:bg-blue-200', 'text-blue-800');
+                option.classList.remove('bg-blue-100', 'hover:bg-blue-200');
+                option.style.opacity = '0.5';
             });
             
-            // Mark correct and incorrect answers
-            if (selectedIndex === correctIndex) {
-                e.target.classList.add('bg-green-500', 'text-white');
-                feedback.textContent = "Correct! Great job!";
-                feedback.className = "hidden p-4 rounded-lg mb-4 text-center text-xl font-bold bg-green-100 text-green-800";
+            if (selectedOption.correct) {
+                options[selectedIndex].classList.add('bg-teal-400');
+                feedback.textContent = `Giỏi quá! Bước tiếp theo: ${step.correctStep} 🌟`;
+                feedback.className = "p-4 rounded-lg mb-4 text-center text-xl font-bold bg-teal-100 text-teal-800 correct-animation";
                 feedback.classList.remove('hidden');
-                feedback.classList.add('correct-animation');
+                
+                // Thêm hiệu ứng ngôi sao
+                const star = document.createElement('span');
+                star.className = 'star-animation';
+                star.textContent = '⭐';
+                quizSection.appendChild(star);
                 
                 playSound('correct');
-                currentQuizIndex++;
-            } else {
-                e.target.classList.add('bg-red-500', 'text-white');
-                options[correctIndex].classList.add('bg-green-500', 'text-white');
-                feedback.textContent = "Try again! You can do it!";
-                feedback.className = "hidden p-4 rounded-lg mb-4 text-center text-xl font-bold bg-red-100 text-red-800";
-                feedback.classList.remove('hidden');
-                feedback.classList.add('incorrect-animation');
+                currentStepIndex++;
                 
+                if (currentStepIndex < lesson.steps.length) {
+                    if (currentStepIndex === 1) {
+                        nextStepTime = lessonVideo.currentTime + 5;
+                    } else if (currentStepIndex === 2) {
+                        nextStepTime = lessonVideo.currentTime + 6;
+                    } else if (currentStepIndex === 3) {
+                        nextStepTime = lessonVideo.currentTime + 9;
+                    }
+                }
+                
+                updateProgress();
+                
+                setTimeout(() => {
+                    quizSection.classList.remove('show');
+                    feedback.classList.add('hidden');
+                    lessonVideo.play();
+                    if (currentStepIndex >= lesson.steps.length) {
+                        lesson.completed = true;
+                        celebrationModal.classList.remove('hidden');
+                    }
+                }, 1500);
+            } else {
+                options[selectedIndex].classList.add('bg-red-300');
+                feedback.textContent = "Không sao đâu, thử lại nhé! 🌟";
+                feedback.className = "p-4 rounded-lg mb-4 text-center text-xl font-bold bg-red-100 text-red-800 incorrect-animation";
+                feedback.classList.remove('hidden');
                 playSound('incorrect');
+                
+                setTimeout(() => {
+                    feedback.classList.add('hidden');
+                    options.forEach(option => {
+                        option.style.opacity = '1';
+                        option.classList.add('bg-blue-100', 'hover:bg-blue-200');
+                        option.classList.remove('bg-red-300', 'bg-teal-400');
+                    });
+                }, 1500);
             }
-            
-            // Show continue button after a delay
-            setTimeout(() => {
-                continueBtn.classList.remove('hidden');
-            }, 1500);
         }
 
         // Play feedback sounds
         function playSound(type) {
             const sound = new Audio();
             sound.src = type === 'correct' ? 
-                'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3' : 
+                'https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3' : 
                 'https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3';
             sound.play();
         }
 
         // Update progress bar
         function updateProgress() {
+            const totalSteps = lesson.steps.length;
+            const progress = (currentStepIndex / totalSteps) * 100;
+            progressBar.style.width = `${progress}%`;
             if (lesson.completed) {
                 progressBar.style.width = '100%';
             }
